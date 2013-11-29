@@ -1,0 +1,22 @@
+% Compute the principal components of PCA method.
+% Inputs:
+%       -Xp    : Original data. Matrix, M(samples)xN(features).
+%
+% Outputs:
+%       -U    : Struct:
+%                       -basis  : principal componets. Matrix, M(samples)xR(rank(X)).
+%                       -train  : training original data
+%                       -method : feature extraction method
+
+function U = pca(Xp,np)
+% % PCA: Cxx*U_pca=s*U_pca
+
+[d,N] = size(Xp);
+Cxx  = (Xp'*Xp)/(N-1);
+
+[A,D,V] = eigs(Cxx,np);
+
+U.lambda=D;
+U.basis=A;
+U.method='PCA';
+U.train=Xp;
