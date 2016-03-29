@@ -34,15 +34,15 @@ if ~isfield(U,'kernel')
     XtestProj  = Xtest * U.basis(:,1:Nfeat);
 elseif strcmp(U.method,'KECA')
     Ktest=(1/sqrt(2*U.sigma*pi))*kernel(U.kernel,U.train,Xtest,U.sigma);
-    XtrainProj = U.Ktrain' *  U.basis;
-    XtestProj = Ktest' *  U.basis;
+    XtrainProj = U.Ktrain' *  U.basis(:,1:Nfeat);
+    XtestProj = Ktest' *  U.basis(:,1:Nfeat);
 else
     Kc=kernelcentering(U.Ktrain);
     Ktest=kernel(U.kernel,U.train,Xtest,U.sigma);
     Kctest=kernelcentering(Ktest,sum(U.Ktrain));
     % Projected original data
-    XtrainProj = Kc' * U.basis;
-    XtestProj  = Kctest' * U.basis;
+    XtrainProj = Kc' * U.basis(:,1:Nfeat);
+    XtestProj  = Kctest' * U.basis(:,1:Nfeat);
 end
 
 % % figure, plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
