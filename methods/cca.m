@@ -6,25 +6,25 @@
 %
 % Outputs:
 %       -U    : Struct:
-%                       -basis  : principal componets. Matrix, M(samples)xR(rank(Cxy)).
+%                       -basis  : principal componets. Matrix, M(samples) x R(rank(Cxy)).
 %                       -train  : training original data
 %                       -method : feature extraction method
 
-function U=cca(X,Y,Nfeat)
-% CCA: A*U_cca=s*B*U_cca
+function U = cca(X, Y, Nfeat)
+% CCA: A * U_cca = s * B * U_cca
 
 Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % Centered labels
-Y1= Yb-repmat(mean(Yb),length(Y),1);
+Y1 = Yb - repmat(mean(Yb),length(Y),1);
 
 dx = size(X,2);
 dy = size(Y1,2);
 
-Cxx = X'*X + 10^(-8)*eye(dx);
-Cxy = X'*Y1;
+Cxx = X' * X + 1e-8 * eye(dx);
+Cxy = X' * Y1;
 Cyx = Cxy';
-Cyy = Y1'*Y1 + 10^(-8)*eye(dy);
+Cyy = Y1' * Y1 + 1e-8 * eye(dy);
 
 % solving the generalized eigenproblem is a nightmare
 % A = [zeros(dx,dx)     Cxy;     
@@ -35,9 +35,13 @@ Cyy = Y1'*Y1 + 10^(-8)*eye(dy);
 % [U_cca d] = eig(A,B); 
 % [U_cca d] = eigs(A,B,Nfeat);
 % it is much simpler is to conver it into a single eigenproblem
-[U_cca,lambda] = gen_eig(Cxy*inv(Cyy)*Cyx,Cxx,Nfeat); % Basis in X
-[V,l] = gen_eig(Cyx*inv(Cxx)*Cxy,Cyy,Nfeat); % Basis in Y
-D         = sqrt(lambda);      % Canonical correlations
+
+%[U_cca,lambda] = gen_eig(Cxy*inv(Cyy)*Cyx, Cxx, Nfeat); % Basis in X
+[U_cca,lambda] = gen_eig(Cxy * (Cyy \ Cyx), Cxx, Nfeat); % Basis in X
+D = sqrt(lambda);      % Canonical correlations
+
+% [V,l] = gen_eig(Cyx*inv(Cxx)*Cxy, Cyy, Nfeat); % Basis in Y
+V = gen_eig(Cyx * (Cxx \ Cxy), Cyy, Nfeat); % Basis in Y
 
 U.lambda = D; 
 U.basis  = U_cca;

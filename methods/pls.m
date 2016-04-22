@@ -1,6 +1,6 @@
-function [W,u,testY,testerror] = pls(X,Xtest,Y,T,varargin)
+function [W, u, testY, testerror] = pls(X, Xtest, Y, T, varargin)
 
-%function [W,testY,testerror] = pls(X,Xtest,Y,T,varargin)
+%function [W, u, testY, testerror] = pls(X, Xtest, Y, T, varargin)
 %
 % Performs PLS discrimination
 %
@@ -31,40 +31,46 @@ function [W,u,testY,testerror] = pls(X,Xtest,Y,T,varargin)
 
 mux = mean(X); muy = mean(Y); 
 
-trainY=0;
-ell=size(X,1);
-for i=1:T
-    YX = Y'*X;
-    u(:,i) = YX(1,:)'/norm(YX(1,:));
+trainY = 0;
+% ell = size(X,1);
+
+u = zeros(size(Y,2), T);
+c = zeros(size(Y,2), T);
+p = zeros(size(X,2), T);
+
+for i = 1:T
+    YX = Y' * X;
+    u(:,i) = YX(1,:)' / norm(YX(1,:));
     if size(Y,2) > 1, % only loop if dimension greater than 1
         uold = u(:,i) + 1;
-        contador=0;
+        contador = 0;
         while norm(u(:,i) - uold) > 0.001,
-            contador=contador+1;
-            if contador>1e3
+            contador = contador + 1;
+            if contador > 1000
                 break
             end
             uold = u(:,i);
-            tu = YX'*YX*u(:,i);
-            u(:,i) = tu/norm(tu);
+            tu = YX' * YX * u(:,i);
+            u(:,i) = tu / norm(tu);
         end
     end
-    t = X*u(:,i);
-    c(:,i) = Y'*t/(t'*t);
-    p(:,i) = X'*t/(t'*t);
+    t = X * u(:,i);
+    c(:,i) = Y' * t / (t'*t);
+    p(:,i) = X' * t / (t'*t);
     trainY = trainY + t*c(:,i)';
-    trainerror = norm(Y - trainY,'fro')/sqrt(ell);
-    X = X - t*p(:,i)';
+    % trainerror = norm(Y - trainY,'fro') / sqrt(ell);
+    X = X - t * p(:,i)';
     % compute residual Y = Y - t*c(:,i)';
 end
+
 % Regression coefficients for new data
-W = u * ((p'*u)\c');%W=u*(inv(p'*u)*c');
+W = u * ((p' * u) \ c'); % W = u * (inv(p' * u) * c');
 %  Xtest gives new data inputs as rows, Ytest true outputs
 elltest = size(Xtest,1); jj = ones(elltest,1);
-testY = (Xtest - jj*mux) * W + jj*muy;
+testY = (Xtest - jj * mux) * W + jj * muy;
 
 if ~isempty(varargin)
     Ytest = varargin{1};
-    testerror = norm(Ytest - testY,'fro')/sqrt(elltest);
-    varargout = testerror;
+    testerror = norm(Ytest - testY,'fro') / sqrt(elltest);
+    % varargout = testerror;
 end

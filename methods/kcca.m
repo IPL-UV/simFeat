@@ -13,12 +13,12 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U=kcca(X,Y,Nfeat)
+function U = kcca(X,Y,Nfeat)
 
 Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % Rough estimation of the sigma parameter:
-sigmax=estimateSigma(X,X);
+sigmax = estimateSigma(X,X);
 
 % Build kernel train
 K  = kernel('rbf',X,X,sigmax);
@@ -26,7 +26,7 @@ Kc = kernelcentering(K);
 
 % Centered labels
 [n dy] = size(Yb);
-Y1= Yb-repmat(mean(Yb),length(Y),1);
+Y1 = Yb - repmat(mean(Yb),length(Y),1);
 
 % solving the generalized eigenproblem is a nightmare
 % dx = size(Kc,2);
@@ -41,11 +41,14 @@ Y1= Yb-repmat(mean(Yb),length(Y),1);
 % [U_kcca d]= gen_eig(A,B,Nfeat);
 % [U_kcca d]= eig(A,B);
 % it is much simpler is to conver it into a single eigenproblem
-Cxx = Kc*Kc + 10^(-6)*eye(n);
-Cyy = Y1'*Y1 + 10^(-6)*eye(dy);
-[U_kcca,lambda] = gen_eig(Kc*Y1*inv(Cyy)*Y1'*Kc,Cxx,Nfeat); % Basis in X
-[V,l] = gen_eig(Y1'*Kc*inv(Cxx)*Kc*Y1,Cyy,Nfeat); % Basis in Y
+
+Cxx = Kc * Kc + 1e-6* eye(n);
+Cyy = Y1' * Y1 + 1e-6 * eye(dy);
+% [U_kcca, lambda] = gen_eig(Kc * Y1 * inv(Cyy) * Y1' * Kc, Cxx, Nfeat); % Basis in X
+[U_kcca, lambda] = gen_eig(Kc * Y1 * (Cyy \ Y1') * Kc, Cxx, Nfeat); % Basis in X
 D         = sqrt(lambda);      % Canonical correlations
+% V = gen_eig(Y1' * Kc * inv(Cxx) * Kc * Y1, Cyy, Nfeat); % Basis in Y
+V = gen_eig(Y1' * Kc * (Cxx \ Kc) * Y1, Cyy, Nfeat); % Basis in Y
 
 U.lambda  = D;
 U.basis   = U_kcca;
@@ -55,4 +58,3 @@ U.train   = X;
 U.Ktrain  = K;
 U.kernel  = 'rbf';
 U.sigma   = sigmax;
-

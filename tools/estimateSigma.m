@@ -31,13 +31,13 @@
 
 function sigma = estimateSigma(X1,X2,Y)
 
-if nargin<3
+if nargin < 3
     method = 'noclass';
 end   
 
 if strcmp(method,'noclass')
 
-    [samples feats] = size(X1);
+    samples = size(X1,1);
     G = sum((X1.*X2),2);
     Q = repmat(G,1,samples);
     R = repmat(G',samples,1);
@@ -49,23 +49,21 @@ if strcmp(method,'noclass')
 else
     Classes = unique(Y);
     NumClasses = length(Classes);
-    for c=1:NumClasses
+    S = zeros(1,NumClasses);
+    for c = 1:NumClasses
         % Take samples of each class
-        idx = find(Y==Classees(c));
-        XX1 = X1(idx,:);
-        XX2 = X2(idx,:);
+        % idx = find(Y==Classees(c));
+        % XX1 = X1(idx,:);
+        % XX2 = X2(idx,:);
         % Compute the median distance
-        [samples feats] = size(X1);
-        G = sum((X1.*X2),2);
+        samples = size(X1,1);
+        G = sum((X1 .* X2),2);
         Q = repmat(G,1,samples);
         R = repmat(G',samples,1);
-        dists = Q + R - 2*X1*X2';
-        dists = dists-tril(dists);
-        dists=reshape(dists,samples^2,1);
+        dists = Q + R - 2 * X1 * X2';
+        dists = dists - tril(dists);
+        dists = reshape(dists,samples^2,1);
         S(c) = sqrt(0.5*mean(dists(dists>0)));
     end
     sigma = mean(S);
 end
-
-
-

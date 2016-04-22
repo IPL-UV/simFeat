@@ -1,4 +1,3 @@
-%
 % Compute a kernel given input data
 %
 % Inputs:
@@ -8,32 +7,29 @@
 %         type: type of kernel function, i.e. linear, polynomial, rbf
 % Output:
 %         K:  kernel matrix
-%
 
-function K = kernel(type,X,X2,param)
+function K = kernel(type,X1,X2,param)
 
 if strcmp(type,'linear')
     
-    K = X*X2';
+    K = X1 * X2';
     
 elseif strcmp(type,'poly')
     
-    K = (1+X*X2').^param;
+    K = (1 + X1 * X2').^param;
     
 elseif strcmp(type,'rbf')
     
-    [n d] = size(X);
-    [n2 d] = size(X2);
-    for i=1:n
+    n1 = size(X1,1);
+    n2 = size(X2,1);
+    D = zeros(n1,n2);
+    for i = 1:n1
         for j =1:n2
-            D(i,j) = norm(X(i,:) - X2(j,:));
+            D(i,j) = norm(X1(i,:) - X2(j,:));
         end
     end
-    K = exp(-D.^2/(2*param^2));
+    K = exp(-D.^2 / (2*param^2));
    
-    
 else
     disp('unspecified kernel function.')
 end
-    
-    

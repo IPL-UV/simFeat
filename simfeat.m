@@ -1,4 +1,3 @@
-%
 % Educational demo that compares standard linear and nonlinear feature extraction methods:
 %       PCA, PLS, OPLS, CCA, MNF,
 %       KPCA, KPLS, KOPLS, KCCA, KMNF and KECA
@@ -11,24 +10,26 @@
 % Emma Izquierdo-Verdiguier, 2012
 % emma.izquierdo@uv.es
 % http://isp.uv.es
-%
 
 clear;clc;close all;
 
-fontname = 'Bookman';
-fontsize = 18;
+fontname = 'Helvetica';
+fontsize = 11;
 fontunits = 'points';
+linewidth = 1; % 3;
+markersize = 5; % 10;
+
 set(0,'DefaultAxesFontName',fontname,'DefaultAxesFontSize',fontsize,'DefaultAxesFontUnits',fontunits,...
     'DefaultTextFontName',fontname,'DefaultTextFontSize',fontsize,'DefaultTextFontUnits',fontunits,...
-    'DefaultLineLineWidth',3,'DefaultLineMarkerSize',10,'DefaultLineColor',[0 0 0]);
+    'DefaultLineLineWidth',linewidth,'DefaultLineMarkerSize',markersize,'DefaultLineColor',[0 0 0]);
 
 %% Path
 addpath(genpath('./methods'))
 addpath(genpath('./tools'))
 
 %% Load data
-rand('seed',1234)
-randn('seed',1234)
+% rand('seed',1234); randn('seed',1234)
+rng(1234);
 Ntrain = 100;   % Training data
 Ntest  = 160;   % Test data
 problem = 'moons'  %  lines  wheel swiss  %%%--  noisysinus moons xor noisyxor ellipsoids balls3 ellipsoids3

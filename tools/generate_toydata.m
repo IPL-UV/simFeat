@@ -1,6 +1,6 @@
-function [X,Y]=generate_toydata(n,method)
+function [X,Y] = generate_toydata(n,method)
 
-% [X,Y]=generate_toydata(n,method)
+% [X,Y] = generate_toydata(n,method)
 %
 % Generates toy classification problems.
 %
@@ -14,9 +14,8 @@ function [X,Y]=generate_toydata(n,method)
 %
 % Gustavo Camps-Valls, 2007(c)
 % gcamps@uv.es
-%
 
-[X,Y]=feval(method,n);
+[X,Y] = feval(method,n);
 
 function [X,Y] = wheel(n)
 
@@ -34,7 +33,7 @@ function [X,Y]=linearmixing(n)
         X = X';
         Y = 0.5*sign(X(:,1))+1.5;
 
-function [X,Y]=noisysinus(n);
+function [X,Y]=noisysinus(n)
 
         t = 0:(2*pi/n):2*pi;
         s  = sin(t).*t + 0.3*randn(1,n+1);
@@ -43,7 +42,7 @@ function [X,Y]=noisysinus(n);
              t', s2'];
         Y = [ones(n+1,1); 2*ones(n+1,1)];
 
-function [X,Y]=lines(n);
+function [X,Y]=lines(n)
 
         var = 1;
         x = 0.015;

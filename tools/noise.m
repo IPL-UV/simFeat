@@ -6,13 +6,16 @@
 % Outputs:
 %       -N   : Noise estimation. Matrix, M(samples)xF(features).
 
-function N=noise(X,Nn)
+function N = noise(X,Nn)
 
-A=pdist(X);
-D=squareform(A);
-[v,ixd]=sort(D);
-for t=1:size(D,1)
-    V=X(ixd(2:Nn+1,t),:);
+A = pdist(X);
+D = squareform(A);
+[~,ixd] = sort(D);
+
+N = zeros(size(D,1), size(X,2));
+
+for t = 1:size(D,1)
+    V = X(ixd(2:Nn+1,t),:);
     X1 = mean(V);
-    N(t,:)=X(t,:)-X1;
+    N(t,:) = X(t,:) - X1;
 end

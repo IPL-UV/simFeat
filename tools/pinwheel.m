@@ -1,9 +1,9 @@
 function [features labels] = pinwheel( radial_std, tangential_std, ...
-                                       num_classes, num_per_class, rate)
+    num_classes, num_per_class, rate)
 %
 % [features labels] = PINWHEEL( radial_std, tangential_std, num_classes,
 %                               num_per_class, rate )
-% 
+%
 % This function generates a "pinwheel" data set.  It has as many arms as
 % classes.  It generates them by taking Gaussian distributions,
 % stretching them and then rotating them appropriately.  The centers are
@@ -29,22 +29,20 @@ function [features labels] = pinwheel( radial_std, tangential_std, ...
 % http://www.gnu.org/licenses/gpl-2.0.txt
 %
 
-  
-  % Find the equidistant angles.
-  rads = linspace(0, 2*pi, num_classes+1);
-  rads = rads(1:end-1);
-  
-  features = randn([ num_classes*num_per_class 2 ]) ...
-      * diag([tangential_std radial_std]) ...
-      + repmat([1 0], [num_classes*num_per_class 1]);
-  labels   = reshape(repmat([1:num_classes],num_per_class,1),num_per_class*num_classes,1);
-  angles   = rads(labels)' + rate*exp(features(:,1));
+
+% Find the equidistant angles.
+rads = linspace(0, 2*pi, num_classes+1);
+rads = rads(1:end-1);
+
+features = randn([ num_classes*num_per_class 2 ]) ...
+    * diag([tangential_std radial_std]) ...
+    + repmat([1 0], [num_classes*num_per_class 1]);
+labels   = reshape(repmat([1:num_classes],num_per_class,1),num_per_class*num_classes,1);
+angles   = rads(labels)' + rate*exp(features(:,1));
 % angles   =  rate*exp(features(:,1));
-  % This would probably be faster if vectorized.
-  for i=1:size(angles,1)%rows(angles)
+% This would probably be faster if vectorized.
+for i=1:size(angles,1)%rows(angles)
     features(i,:) = features(i,:) ...
         * [ cos(angles(i)) -sin(angles(i)) ; ...
-            sin(angles(i))  cos(angles(i))];
-  end
-  
-                        
+        sin(angles(i))  cos(angles(i))];
+end

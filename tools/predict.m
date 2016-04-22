@@ -14,7 +14,7 @@
 % Outputs:
 %        Ypred   : Predicted labels. Vector, 1XF(features).
 
-function Ypred = predict(Y,Xtest,U,Nfeat)
+function Ypred = predict(Y, Xtest, U, Nfeat)
 
 Nfeat = min([Nfeat,size(U.basis,2),9]);
 % switch U.method
@@ -51,9 +51,8 @@ end
 % % title(strcat(U.method,' scores'))
 
 % Prediction labels using linear regression as a naive classifier
-Yb=binarize(Y);
-XtrainProj1=[XtrainProj ones(size(XtrainProj,1),1)];
-W=pinv(XtrainProj1)*Yb;
- Ypred=XtestProj*W(1:end-1,:)+repmat(W(end,:),size(XtestProj,1),1);
-[x Ypred]=max(Ypred,[],2);
-
+Yb = binarize(Y);
+XtrainProj1 = [XtrainProj ones(size(XtrainProj,1),1)];
+W = pinv(XtrainProj1) * Yb;
+Ypred = XtestProj * W(1:end-1,:) + repmat(W(end,:),size(XtestProj,1),1);
+[~, Ypred] = max(Ypred,[],2);

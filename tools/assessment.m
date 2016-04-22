@@ -122,6 +122,3 @@ case 'regress'
 otherwise
 	disp('Unknown learning paradigm.')
 end
- 
-
-

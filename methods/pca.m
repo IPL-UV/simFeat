@@ -9,14 +9,15 @@
 %                       -method : feature extraction method
 
 function U = pca(Xp,np)
-% % PCA: Cxx*U_pca=s*U_pca
+% PCA: Cxx * U_pca = s * U_pca
 
-[d,N] = size(Xp);
-Cxx  = (Xp'*Xp)/(N-1);
+N = size(Xp,2);
+Cxx  = (Xp' * Xp) / (N - 1);
 
-[A,D,V] = eigs(Cxx,np);
+% [A,D,V] = eigs(Cxx,np);
+[A,D] = eigs(Cxx,np);
 
-U.lambda=D;
-U.basis=A;
-U.method='PCA';
-U.train=Xp;
+U.lambda = D;
+U.basis = A;
+U.method = 'PCA';
+U.train = Xp;
