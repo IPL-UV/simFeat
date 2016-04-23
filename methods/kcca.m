@@ -13,15 +13,19 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U = kcca(X,Y,Nfeat)
+function U = kcca(X, Y, Nfeat, estimateSigmaMethod)
 
 Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % Rough estimation of the sigma parameter:
-sigmax = estimateSigma(X,X);
+% sigmax = estimateSigma(X,X);
+if ~exist('estimateSigmaMethod', 'var'),
+    estimateSigmaMethod = 'mean';
+end
+sigmax = estimateSigma(X, [], estimateSigmaMethod);
 
 % Build kernel train
-K  = kernel('rbf',X,X,sigmax);
+K  = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
 % Centered labels
@@ -42,7 +46,9 @@ Y1 = Yb - repmat(mean(Yb),length(Y),1);
 % [U_kcca d]= eig(A,B);
 % it is much simpler is to conver it into a single eigenproblem
 
-Cxx = Kc * Kc + 1e-6* eye(n);
+Kc = Kc + 1e-6 * eye(n);
+Cxx = Kc * Kc;
+% Cxx = Kc * Kc  + 1e-6 * eye(n);
 Cyy = Y1' * Y1 + 1e-6 * eye(dy);
 % [U_kcca, lambda] = gen_eig(Kc * Y1 * inv(Cyy) * Y1' * Kc, Cxx, Nfeat); % Basis in X
 [U_kcca, lambda] = gen_eig(Kc * Y1 * (Cyy \ Y1') * Kc, Cxx, Nfeat); % Basis in X

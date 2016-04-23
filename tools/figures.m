@@ -30,7 +30,7 @@ if isfield(U,'kernel') && isfield(U,'lambda')
 end
 
 %% PLOT
-if max(Y)==3
+if max(Y) == 3
     rows = 1+ ceil(Nfeat/3);
     cols = 3;
     figure,

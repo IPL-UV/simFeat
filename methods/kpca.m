@@ -12,14 +12,18 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U = kpca(X,Nfeat)
+function U = kpca(X, Nfeat, estimateSigmaMethod)
 % KCCA: A * U_kcca = s * B * U_kcca
 
 % Rough estimation of the sigma parameter:
-sigmax = estimateSigma(X,X);
+% sigmax = estimateSigma(X,X);
+if ~exist('estimateSigmaMethod', 'var'),
+    estimateSigmaMethod = 'mean';
+end
+sigmax = estimateSigma(X, [], estimateSigmaMethod);
 
 % Build kernel train
-K = kernel('rbf',X,X,sigmax);
+K = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
 [U_kpca,s] = eigs(Kc, Nfeat);

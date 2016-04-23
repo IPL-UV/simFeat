@@ -45,7 +45,7 @@ Wx = fliplr(Wx);         % restore sorted eigenvectors into descending order
 
 % --- Calcualte Wy  ---
 
-% Wy = invCyy*Cyx*Wx;     % Basis in Y
+% Wy = invCyy * Cyx * Wx;     % Basis in Y
 % Wy = (Cyy \ Cyx) * Wx;
 % Wy = Wy ./ repmat(sqrt(sum(abs(Wy).^2)), sy, 1); % Normalize Wy
 

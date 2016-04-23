@@ -15,6 +15,10 @@ function U = cca(X, Y, Nfeat)
 
 Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
+% TODO: labels are centered in train:
+%       1) they should be centered at test too (they don't)
+%       2) other methods should center them too (they don't)
+%       3) would it be better not binarizing Y variables? I think so
 % Centered labels
 Y1 = Yb - repmat(mean(Yb),length(Y),1);
 
@@ -35,6 +39,12 @@ Cyy = Y1' * Y1 + 1e-8 * eye(dy);
 % [U_cca d] = eig(A,B); 
 % [U_cca d] = eigs(A,B,Nfeat);
 % it is much simpler is to conver it into a single eigenproblem
+
+%A = [zeros(dx,dy) Cxy       ; Cyx       zeros(dy,dx)];
+%B = [Cxx          zeros(dx) ; zeros(dy) Cyy         ];
+%[U_cca,lambda] = eigs(A, B, Nfeat);
+%U_cca = U_cca(1:Nfeat,:);
+%D = (abs(lambda));
 
 %[U_cca,lambda] = gen_eig(Cxy*inv(Cyy)*Cyx, Cxx, Nfeat); % Basis in X
 [U_cca,lambda] = gen_eig(Cxy * (Cyy \ Cyx), Cxx, Nfeat); % Basis in X

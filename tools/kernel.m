@@ -24,7 +24,7 @@ elseif strcmp(type,'rbf')
     n2 = size(X2,1);
     D = zeros(n1,n2);
     for i = 1:n1
-        for j =1:n2
+        for j = 1:n2
             D(i,j) = norm(X1(i,:) - X2(j,:));
         end
     end

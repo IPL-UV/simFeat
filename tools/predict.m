@@ -31,18 +31,18 @@ Nfeat = min([Nfeat,size(U.basis,2),9]);
 if ~isfield(U,'kernel')    
     % Projected original data
     XtrainProj = U.train * U.basis(:,1:Nfeat);
-    XtestProj  = Xtest * U.basis(:,1:Nfeat);
+    XtestProj = Xtest * U.basis(:,1:Nfeat);
 elseif strcmp(U.method,'KECA')
-    Ktest=(1/sqrt(2*U.sigma*pi))*kernel(U.kernel,U.train,Xtest,U.sigma);
+    Ktest = (1/sqrt(2*U.sigma*pi)) * kernel(U.kernel,U.train,Xtest,U.sigma);
     XtrainProj = U.Ktrain' *  U.basis(:,1:Nfeat);
     XtestProj = Ktest' *  U.basis(:,1:Nfeat);
 else
-    Kc=kernelcentering(U.Ktrain);
-    Ktest=kernel(U.kernel,U.train,Xtest,U.sigma);
-    Kctest=kernelcentering(Ktest,sum(U.Ktrain));
+    Kc = kernelcentering(U.Ktrain);
+    Ktest = kernel(U.kernel,U.train,Xtest,U.sigma);
+    Kctest = kernelcentering(Ktest,sum(U.Ktrain));
     % Projected original data
     XtrainProj = Kc' * U.basis(:,1:Nfeat);
-    XtestProj  = Kctest' * U.basis(:,1:Nfeat);
+    XtestProj = Kctest' * U.basis(:,1:Nfeat);
 end
 
 % % figure, plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)

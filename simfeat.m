@@ -37,11 +37,11 @@ problem = 'moons'  %  lines  wheel swiss  %%%--  noisysinus moons xor noisyxor e
 [Xtest,Ytest] = generate_toydata(Ntest,problem);
 
 %% Standardize the data
-id=size(X,1);
-Xt=[X;Xtest];
-Xt=scalestd(Xt);
-X=Xt(1:id,:);
-Xtest=Xt(1+id:end,:);
+id = size(X,1);
+Xt = [X;Xtest];
+Xt = scalestd(Xt);
+X = Xt(1:id,:);
+Xtest = Xt(1+id:end,:);
 
 % %% Plot original distribution
 % figure, plot(X(Y==1,1),X(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
@@ -55,15 +55,18 @@ np = 35;           % Number of features to be extracted
 % methods = {'pca'}
 methods = {'pca' 'pls-SB' 'pls' 'opls' 'cca' 'mnf' 'kpca' 'kpls-SB' 'kpls' 'kopls' 'kcca' 'kmnf' 'keca'}; % all methods
 % methods = {'pca' 'pls' 'opls' 'cca' 'mnf'}; % linear methods
-% methods = { 'kcca'}; % linear methods
+% methods = {'kcca'}; % linear methods
 % methods = {'pls' 'opls' 'cca' 'kpls' 'kopls' 'kcca'}; % supervised
 % methods = {'pca' 'mnf' 'kpca' 'kmnf' 'keca'}; % unsupervised
 % methods = {'kpls' 'kopls' 'kcca'}; % supervised kernel methods
 % methods = {'kpca' 'kmnf' 'keca'}; % unsupervised kernel methods
 
-%% Do you want to analyze robustness to #samples by bootstrapping a 
-%% linear classifier working with the scores (projected data)?
+% Do you want to analyze robustness to #samples by bootstrapping a 
+% linear classifier working with the scores (projected data)?
 linearclass = 1
+
+% For nonlinear methods, which method to use when estimating RBF 'sigma'
+estimateSigmaMethod = 'mean';
 
 %% Linear Methods
 
@@ -96,6 +99,12 @@ if sum(strcmpi(methods,'cca'))
     U_cca = cca(X,Y,npmax);
     Ypred_CCA = predict(Y,Xtest,U_cca,npmax);
 end
+% CCA2
+%if sum(strcmpi(methods,'cca2'))
+%    npmax = min([np,size(X,2),max(Y)]);
+%    U_cca2 = cca2(X',Y');
+%    Ypred_CCA2 = predict(Y,Xtest,U_cca2,npmax);
+%end
 % MNF
 if sum(strcmpi(methods,'mnf'))
     npmax = min([np,size(X,2)]);
@@ -108,43 +117,43 @@ end
 % KPCA
 if sum(strcmpi(methods,'kpca'))
     npmax = min([np,size(X,1)]);
-    U_kpca = kpca(X,npmax);
-    Ypred_KPCA = predict(Y,Xtest,U_kpca,npmax);
+    U_kpca = kpca(X, npmax, estimateSigmaMethod);
+    Ypred_KPCA = predict(Y, Xtest, U_kpca, npmax);
 end
 % KPLS-SB
 if sum(strcmpi(methods,'kpls-SB'))
     npmax = min([np,max(Y)]);
-    U_kplsSB = kpls(X,Y,npmax);
-    Ypred_KPLSSB = predict(Y,Xtest,U_kplsSB,npmax);
+    U_kplsSB = kpls(X, Y, npmax, estimateSigmaMethod);
+    Ypred_KPLSSB = predict(Y, Xtest, U_kplsSB, npmax);
 end
 % KPLS
 if sum(strcmpi(methods,'kpls'))
     npmax = np;
-    [U_kpls Ypred_KPLS]=predictKPLS(X,Xtest,Y,npmax);
+    [U_kpls Ypred_KPLS] = predictKPLS(X, Xtest, Y, npmax, estimateSigmaMethod);
 end
 % KOPLS
 if sum(strcmpi(methods,'kopls'))
     npmax = min([np,max(Y)]);
-    U_kopls = kopls(X,Y,npmax);
-    Ypred_KOPLS = predict(Y,Xtest,U_kopls,npmax);
+    U_kopls = kopls(X, Y, npmax, estimateSigmaMethod);
+    Ypred_KOPLS = predict(Y, Xtest, U_kopls, npmax);
 end
 % KCCA
 if sum(strcmpi(methods,'kcca'))
-    npmax = min([np,size(X,1)]);
-    U_kcca = kcca(X,Y,npmax);
-    Ypred_KCCA = predict(Y,Xtest,U_kcca,npmax);
+    npmax = min([np,max(Y)]); %size(X,1)]);
+    U_kcca = kcca(X, Y, npmax, estimateSigmaMethod);
+    Ypred_KCCA = predict(Y, Xtest, U_kcca, npmax);
 end
 % KMNF
 if sum(strcmpi(methods,'kmnf'))
     npmax = min([np,size(X,1)]);
-    U_kmnf = kmnf(X,npmax);
-    Ypred_KMNF = predict(Y,Xtest,U_kmnf,npmax);
+    U_kmnf = kmnf(X, npmax, estimateSigmaMethod);
+    Ypred_KMNF = predict(Y, Xtest, U_kmnf, npmax);
 end
 % KECA
 if sum(strcmpi(methods,'keca'))
     npmax = min([np,size(X,1)]);
-    U_keca = keca(X,npmax);
-    Ypred_KECA = predict(Y,Xtest,U_keca,npmax);
+    U_keca = keca(X, npmax, estimateSigmaMethod);
+    Ypred_KECA = predict(Y, Xtest, U_keca, npmax);
 end
 
 %% Plots
@@ -177,6 +186,9 @@ end
 if sum(strcmpi(methods,'cca'))
     figures(U_cca,Y,np)
 end
+%if sum(strcmpi(methods,'cca2'))
+%    figures(U_cca2,Y,np)
+%end
 if sum(strcmpi(methods,'mnf'))
     figures(U_mnf,Y,np)
 end
@@ -202,64 +214,90 @@ if sum(strcmpi(methods,'keca'))
     figures(U_keca,Y,np)
 end
 
+
+%% Statistics
 if linearclass
+    
     % Accuracy vs #predictions
     [ntest d] = size(Ytest);
-    warning off
-    for realiza=1:10
-        r=randperm(ntest);
-        for i=1:ntest
+    
+    OAvsNumPredictionsPCA = zeros(10,ntest);
+    OAvsNumPredictionsPLSSB = zeros(10,ntest);
+    OAvsNumPredictionsPLS = zeros(10,ntest);
+    OAvsNumPredictionsOPLS = zeros(10,ntest);
+    OAvsNumPredictionsCCA = zeros(10,ntest);
+    %OAvsNumPredictionsCCA2 = zeros(10,ntest);
+    OAvsNumPredictionsMNF = zeros(10,ntest);
+    OAvsNumPredictionsKPCA = zeros(10,ntest);
+    OAvsNumPredictionsKPLSSB = zeros(10,ntest);
+    OAvsNumPredictionsKPLS = zeros(10,ntest);
+    OAvsNumPredictionsKOPLS = zeros(10,ntest);
+    OAvsNumPredictionsKCCA = zeros(10,ntest);
+    OAvsNumPredictionsKMNF = zeros(10,ntest);
+    OAvsNumPredictionsKECA = zeros(10,ntest);
+    
+    warning('off','all')
+    for realiza = 1:10
+        r = randperm(ntest);
+        %warning('off','all');
+        %task = getCurrentTask;
+        %fprintf('task: %d on r: %d\n', task.ID, realiza)
+        for i = 1:ntest
             if sum(strcmpi(methods,'pca'))
-                RES=assessment(Ytest(r(1:i)),Ypred_PCA(r(1:i)),'class');
-                OAvsNumPredictionsPCA(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_PCA(r(1:i)),'class');
+                OAvsNumPredictionsPCA(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'pls-SB'))
-                RES=assessment(Ytest(r(1:i)),Ypred_PLSSB(r(1:i)),'class');
-                OAvsNumPredictionsPLSSB(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_PLSSB(r(1:i)),'class');
+                OAvsNumPredictionsPLSSB(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'pls'))
-                RES=assessment(Ytest(r(1:i)),Ypred_PLS(r(1:i)),'class');
-                OAvsNumPredictionsPLS(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_PLS(r(1:i)),'class');
+                OAvsNumPredictionsPLS(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'opls'))
-                RES=assessment(Ytest(r(1:i)),Ypred_OPLS(r(1:i)),'class');
-                OAvsNumPredictionsOPLS(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_OPLS(r(1:i)),'class');
+                OAvsNumPredictionsOPLS(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'cca'))
-                RES=assessment(Ytest(r(1:i)),Ypred_CCA(r(1:i)),'class');
-                OAvsNumPredictionsCCA(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_CCA(r(1:i)),'class');
+                OAvsNumPredictionsCCA(realiza,i) = RES.OA;
             end
+            %if sum(strcmpi(methods,'cca2'))
+            %    RES = assessment(Ytest(r(1:i)),Ypred_CCA2(r(1:i)),'class');
+            %    OAvsNumPredictionsCCA2(realiza,i) = RES.OA;
+            %end
             if sum(strcmpi(methods,'mnf'))
-                RES=assessment(Ytest(r(1:i)),Ypred_MNF(r(1:i)),'class');
-                OAvsNumPredictionsMNF(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_MNF(r(1:i)),'class');
+                OAvsNumPredictionsMNF(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kpca'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KPCA(r(1:i)),'class');
-                OAvsNumPredictionsKPCA(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KPCA(r(1:i)),'class');
+                OAvsNumPredictionsKPCA(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kpls-SB'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KPLSSB(r(1:i)),'class');
-                OAvsNumPredictionsKPLSSB(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KPLSSB(r(1:i)),'class');
+                OAvsNumPredictionsKPLSSB(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kpls'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KPLS(r(1:i)),'class');
-                OAvsNumPredictionsKPLS(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KPLS(r(1:i)),'class');
+                OAvsNumPredictionsKPLS(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kopls'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KOPLS(r(1:i)),'class');
-                OAvsNumPredictionsKOPLS(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KOPLS(r(1:i)),'class');
+                OAvsNumPredictionsKOPLS(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kcca'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KCCA(r(1:i)),'class');
-                OAvsNumPredictionsKCCA(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KCCA(r(1:i)),'class');
+                OAvsNumPredictionsKCCA(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'kmnf'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KMNF(r(1:i)),'class');
-                OAvsNumPredictionsKMNF(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KMNF(r(1:i)),'class');
+                OAvsNumPredictionsKMNF(realiza,i) = RES.OA;
             end
             if sum(strcmpi(methods,'keca'))
-                RES=assessment(Ytest(r(1:i)),Ypred_KECA(r(1:i)),'class');
-                OAvsNumPredictionsKECA(realiza,i)=RES.OA;
+                RES = assessment(Ytest(r(1:i)),Ypred_KECA(r(1:i)),'class');
+                OAvsNumPredictionsKECA(realiza,i) = RES.OA;
             end
         end
     end
@@ -280,6 +318,9 @@ if linearclass
     if sum(strcmpi(methods,'cca'))
         semilogx(1:ntest,mean(OAvsNumPredictionsCCA),'k-.','linewidth',3), hold on
     end
+    %if sum(strcmpi(methods,'cca2'))
+    %    semilogx(1:ntest,mean(OAvsNumPredictionsCCA2),'g-.','linewidth',3), hold on
+    %end
     if sum(strcmpi(methods,'mnf'))
         semilogx(1:ntest,mean(OAvsNumPredictionsMNF),'g-.','linewidth',3), hold on
     end
@@ -309,5 +350,4 @@ if linearclass
     grid
     axis tight
     legend(methods)
-    
 end

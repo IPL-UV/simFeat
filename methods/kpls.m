@@ -13,16 +13,20 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U = kpls(X,Y,Nfeat)
+function U = kpls(X, Y, Nfeat, estimateSigmaMethod)
 % KPLS: K * Y * U_kpls = s * U_kpls
 
 Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % Rough estimation of the sigma parameter:
-sigmax = estimateSigma(X,X);
+% sigmax = estimateSigma(X,X);
+if ~exist('estimateSigmaMethod', 'var'),
+    estimateSigmaMethod = 'mean';
+end
+sigmax = estimateSigma(X, [], estimateSigmaMethod);
 
 % Build kernel train
-K = kernel('rbf',X,X,sigmax);
+K = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
 % [U_kpls,s,v] = svds(Kc * Yb,Nfeat);

@@ -1,10 +1,10 @@
 % Noise estimation as the distance to the average of the nearest neighbors
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xF(features).
+%       -X    : Original data. Matrix, M(samples) x F(features).
 %       -Mn   : # of nearest neighbors
 %
 % Outputs:
-%       -N   : Noise estimation. Matrix, M(samples)xF(features).
+%       -N   : Noise estimation. Matrix, M(samples) x F(features).
 
 function N = noise(X,Nn)
 

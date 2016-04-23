@@ -12,20 +12,25 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U = kmnf(X,Nfeat)
+function U = kmnf(X, Nfeat, estimateSigmaMethod)
 % KMNF: Kxx * Kxx * U_mnf = s * Kxn * Kxn' * U_mnf
 
 % Rough estimation of the sigma parameter:
-sigmax = estimateSigma(X,X);
+% sigmax = estimateSigma(X,X);
+if ~exist('estimateSigmaMethod', 'var'),
+    estimateSigmaMethod = 'mean';
+end
+sigmax = estimateSigma(X, [], estimateSigmaMethod);
 
 % Build kernel train
-K = kernel('rbf',X,X,sigmax);
+K = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
 % noise estimation
 N = noise(X,10);
-sigmaxn = estimateSigma(X,N);
-Kxn = kernel('rbf',X,N,sigmaxn);
+% sigmaxn = estimateSigma(X,N);
+sigmaxn = estimateSigma(X, N, estimateSigmaMethod);
+Kxn = kernel('rbf', X, N, sigmaxn);
 Kxnc = kernelcentering(Kxn);
 
 [U_kmnf d] = gen_eig(Kc * Kc, Kxnc * Kxnc',Nfeat);

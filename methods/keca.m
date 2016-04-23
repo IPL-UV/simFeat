@@ -13,16 +13,20 @@
 %                       -kernel : Kernel kind.
 %                       -Ktrain : Kernel train.
 
-function U = keca(X,Nfeat)
+function U = keca(X, Nfeat, estimateSigmaMethod)
 % KECA: (Information Theory): Selects the principal directions that
 % maximize the entropy. That is, the directions which have more
 % information.
 
 % Rough estimation of the sigma parameter:
-sigmax = estimateSigma(X,X);
+% sigmax = estimateSigma(X,X);
+if ~exist('estimateSigmaMethod', 'var'),
+    estimateSigmaMethod = 'mean';
+end
+sigmax = estimateSigma(X, [], estimateSigmaMethod);
 
 % Build kernel train
-K = (1/sqrt(2*sigmax*pi)) * kernel('rbf',X,X,sigmax);
+K = (1/sqrt(2*sigmax*pi)) * kernel('rbf', X, X, sigmax);
 
 [U,s] = eigs(K,Nfeat);
 m = zeros(1,size(U,2));

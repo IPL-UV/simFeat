@@ -21,7 +21,7 @@ function [X,Y] = wheel(n)
 
         [X,Y] = pinwheel(0.5, 0.3, 2, n, 1);
 
-function [X,Y]=linearmixing(n)
+function [X,Y] = linearmixing(n)
 
         s = sin(0:(50/n):50);
         N = length(s);
@@ -33,7 +33,7 @@ function [X,Y]=linearmixing(n)
         X = X';
         Y = 0.5*sign(X(:,1))+1.5;
 
-function [X,Y]=noisysinus(n)
+function [X,Y] = noisysinus(n)
 
         t = 0:(2*pi/n):2*pi;
         s  = sin(t).*t + 0.3*randn(1,n+1);
@@ -42,7 +42,7 @@ function [X,Y]=noisysinus(n)
              t', s2'];
         Y = [ones(n+1,1); 2*ones(n+1,1)];
 
-function [X,Y]=lines(n)
+function [X,Y] = lines(n)
 
         var = 1;
         x = 0.015;
@@ -54,7 +54,7 @@ function [X,Y]=lines(n)
         X=[X1;X2];
         Y=[Y1;Y2];
 
-function [X,Y]=xor(n);
+function [X,Y] = xor(n);
 
         n = n/2;
         X1 = mvnrnd([1;20],[1 0;0 1],n);
@@ -68,7 +68,7 @@ function [X,Y]=xor(n);
         X  = [X1;X2;X3;X4];
         Y  = [Y1;Y2;Y3;Y4];
 
-function [X,Y]=noisyxor(n);
+function [X,Y] = noisyxor(n);
 
         n = n/2;
         X1 = mvnrnd([1;10],[.01 0;0 2],n);
@@ -82,7 +82,7 @@ function [X,Y]=noisyxor(n);
         X  = [X1;X2;X3;X4];
         Y  = [Y1;Y2;Y3;Y4];
 
-function [X,Y]=balls3(n);
+function [X,Y] = balls3(n);
 
         n = n/2;
         X1 = mvnrnd([15 15],[1 0;0 1],n);
@@ -94,7 +94,7 @@ function [X,Y]=balls3(n);
         X  = [X1;X2;X3];
         Y  = [Y1;Y2;Y3];
 
-function [X,Y]=parabolloid(n);
+function [X,Y] = parabolloid(n);
 
         space=1.5;
         noise = 0.05;
@@ -104,7 +104,7 @@ function [X,Y]=parabolloid(n);
         X=([r1.*cos(theta) abs(r2.*sin(theta))]);
         Y=ones(n,1);
 
-function [X,Y]=ellipsoids(n_points)
+function [X,Y] = ellipsoids(n_points)
 		
         mean1 = [0;1];
         mean2 = [0;3];
@@ -121,7 +121,7 @@ function [X,Y]=ellipsoids(n_points)
         Y(n_points+1:end,1) = 2;
 		
 
-function [X,Y]=ellipsoids3(n_points)
+function [X,Y] = ellipsoids3(n_points)
 		
         mean1 = [-2;1];
         mean2 = [2;-2];
@@ -139,7 +139,7 @@ function [X,Y]=ellipsoids3(n_points)
 		X = [X1;X2;X3];
 		Y = [Y1;Y2;Y3];
 
-function [X,Y]=moons(n)
+function [X,Y] = moons(n)
 
         space = 2;
         noise = 0.05;
@@ -158,7 +158,7 @@ function [X,Y]=moons(n)
         X=[X1;X2];
         Y=[Y1;Y2];
 
-function [X,Y]=swiss(n);
+function [X,Y] = swiss(n)
 
         tt = (3*pi/2)*(1+2*rand(1,n));
         X1 = [tt.*cos(tt); tt.*sin(tt)]';
