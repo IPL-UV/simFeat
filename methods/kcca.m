@@ -1,24 +1,21 @@
 % Compute the principal components of KCCA method.
 %
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Y    : Labeled of X. Vector, M(samples)x1.
-%       -Nfmax: # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Y     : Labels of X. Vector, M(samples) x 1
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets.Matrix, M(samples)xR(rank(K*Y)).
-%                       -train  : training original data
-%                       -method : feature extraction method
-%                       -kernel : Kernel kind.
-%                       -Ktrain : Kernel train.
+%       - U     : Struct:
+%                   - basis  : principal componets.Matrix, M(samples) x R(rank(K*Y))
+%                   - train  : training original data
+%                   - method : feature extraction method
+%                   - kernel : Kernel type
+%                   - Ktrain : Kernel train
 
 function U = kcca(X, Y, Nfeat, estimateSigmaMethod)
 
-% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
-
 % Rough estimation of the sigma parameter:
-% sigmax = estimateSigma(X,X);
 if ~exist('estimateSigmaMethod', 'var'),
     estimateSigmaMethod = 'mean';
 end

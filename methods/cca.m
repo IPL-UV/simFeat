@@ -1,29 +1,17 @@
 % Compute the principal components of PLS method.
 % Inputs:
-%       -X    : Original data. Matrix, M(samples) x N(features)
-%       -Y    : Labeled of X. Vector, M(samples) x 1
-%       -Nfmax: # features extracted
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Y     : Labeled of X. Vector, M(samples) x 1
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets. Matrix, M(samples) x R(rank(Cxy))
-%                       -train  : training original data
-%                       -method : feature extraction method
+%       - U     : Struct:
+%                   - basis  : principal componets. Matrix, M(samples) x R(rank(Cxy))
+%                   - train  : training original data
+%                   - method : feature extraction method
 
 function U = cca(X, Y, Nfeat)
 % CCA: A * U_cca = s * B * U_cca
-
-% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
-
-% TODO: labels are centered in train:
-%       1) they should be centered at test too (they don't)
-%       2) other methods should center them too (they don't)
-%       3) would it be better not binarizing Y variables? I think so
-% Centered labels
-% Y1 = Yb - repmat(mean(Yb),length(Y),1);
-
-% dx = size(X,2);
-% dy = size(Y1,2);
 
 Cxx = X' * X + 1e-8 * eye(size(X,2));
 Cxy = X' * Y;

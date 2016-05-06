@@ -1,25 +1,22 @@
 % Compute the principal components of KPLS method.
 %
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Yb   : Labeled of X. Matrix, M(samples)xC(classes).
-%       -Nfmax: # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Yb    : Labeled of X. Matrix, M(samples) x C(classes)
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets. Matrix, M(samples)xR(rank(K*Y))
-%                       -train  : training original data
-%                       -method : feature extraction method
-%                       -kernel : Kernel kind.
-%                       -Ktrain : Kernel train.
+%       - U     : Struct:
+%                   - basis  : principal componets. Matrix, M(samples) x R(rank(K*Y))
+%                   - train  : training original data
+%                   - method : feature extraction method
+%                   - kernel : Kernel type
+%                   - Ktrain : Kernel train
 
 function U = kpls(X, Y, Nfeat, estimateSigmaMethod)
 % KPLS: K * Y * U_kpls = s * U_kpls
 
-% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
-
 % Rough estimation of the sigma parameter:
-% sigmax = estimateSigma(X,X);
 if ~exist('estimateSigmaMethod', 'var'),
     estimateSigmaMethod = 'mean';
 end

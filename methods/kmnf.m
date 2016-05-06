@@ -1,22 +1,21 @@
 % Compute the principal components of KMNF method.
 %
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Nfmax: # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets.Matrix, M(samples)xNfeat(extracted features).
-%                       -train  : training original data
-%                       -method : feature extraction method
-%                       -kernel : Kernel kind.
-%                       -Ktrain : Kernel train.
+%       - U     : Struct:
+%                   - basis  : principal componets.Matrix, M(samples) x Nfeat(extracted features)
+%                   - train  : training original data
+%                   - method : feature extraction method
+%                   - kernel : Kernel type
+%                   - Ktrain : Kernel train
 
 function U = kmnf(X, Nfeat, estimateSigmaMethod)
 % KMNF: Kxx * Kxx * U_mnf = s * Kxn * Kxn' * U_mnf
 
 % Rough estimation of the sigma parameter:
-% sigmax = estimateSigma(X,X);
 if ~exist('estimateSigmaMethod', 'var'),
     estimateSigmaMethod = 'mean';
 end
@@ -26,9 +25,8 @@ sigmax = estimateSigma(X, [], estimateSigmaMethod);
 K = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
-% noise estimation
+% Noise estimation
 N = noise(X,10);
-% sigmaxn = estimateSigma(X,N);
 sigmaxn = estimateSigma(X, N, estimateSigmaMethod);
 Kxn = kernel('rbf', X, N, sigmaxn);
 Kxnc = kernelcentering(Kxn);

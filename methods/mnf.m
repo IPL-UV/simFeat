@@ -1,13 +1,13 @@
 % Compute the principal components of MNF method.
 % Inputs:
-%       -X     : Original data. Matrix, M(samples)xN(features).
-%       -Nfeat : # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Nfeat : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets. M(samples)xNfeat(extracted features).
-%                       -train  : training original data
-%                       -method : feature extraction method
+%       - U     : Struct:
+%                   - basis  : principal components. M(samples) x Nfeat(extracted features)
+%                   - train  : training original data
+%                   - method : feature extraction method
 
 function U = mnf(X,Nfeat)
 % MNF: Cxx * U_mnf = s * Cnn * U_mnf

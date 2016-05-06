@@ -1,33 +1,30 @@
 function [W, u, testY, testerror] = pls(X, Xtest, Y, T, varargin)
 
-%function [W, u, testY, testerror] = pls(X, Xtest, Y, T, varargin)
+% function [W, u, testY, testerror] = pls(X, Xtest, Y, T, varargin)
 %
 % Performs PLS discrimination
 %
-%INPUTS
-% X = the training kernel matrix (ell x N)
-% Xtest = the sample matrix (elltest x N)
-% Y = the training label matrix (ell x m)
-% T = the number of PLS components to take
-% varargin = optional argument specifying the true test label matrix
-%            of size elltest x m
+% INPUTS
+%  X = the training kernel matrix (ell x N)
+%  Xtest = the sample matrix (elltest x N)
+%  Y = the training label matrix (ell x m)
+%  T = the number of PLS components to take
+%  varargin = optional argument specifying the true test label matrix
+%             of size elltest x m
 %
-%OUTPUTs
-% w = the weight vectors corresponding to the PLS classfier
-% testY = the estimated label matrix for the test samples
-% testerror = the test error
+% OUTPUTs
+%  w = the weight vectors corresponding to the PLS classfier
+%  testY = the estimated label matrix for the test samples
+%  testerror = the test error
 %
 %
-%For more info, see www.kernel-methods.net
+% For more info, see www.kernel-methods.net
 %
-%Note: this code has not been tested extensively.
-
-
+% Note: this code has not been tested extensively.
 
 % X is an ell x n matrix whose rows are the training inputs
 % Y is ell x m containing the corresponding output vectors
 % T gives the number of iterations to be performed
-
 
 mux = mean(X); muy = mean(Y); 
 
@@ -65,7 +62,7 @@ end
 
 % Regression coefficients for new data
 W = u * ((p' * u) \ c'); % W = u * (inv(p' * u) * c');
-%  Xtest gives new data inputs as rows, Ytest true outputs
+% Xtest gives new data inputs as rows, Ytest true outputs
 elltest = size(Xtest,1); jj = ones(elltest,1);
 testY = (Xtest - jj * mux) * W + jj * muy;
 

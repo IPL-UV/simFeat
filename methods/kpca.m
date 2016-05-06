@@ -1,22 +1,21 @@
 % Compute the principal components of KPCA method.
 %
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Nfmax: # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal components. Matrix, M(samples)xR(rank(K)).
-%                       -train  : training original data
-%                       -method : feature extraction method
-%                       -kernel : Kernel kind.
-%                       -Ktrain : Kernel train.
+%       - U     : Struct:
+%                   - basis  : principal components. Matrix, M(samples) x R(rank(K))
+%                   - train  : training original data
+%                   - method : feature extraction method
+%                   - kernel : Kernel type
+%                   - Ktrain : Kernel train
 
 function U = kpca(X, Nfeat, estimateSigmaMethod)
 % KCCA: A * U_kcca = s * B * U_kcca
 
 % Rough estimation of the sigma parameter:
-% sigmax = estimateSigma(X,X);
 if ~exist('estimateSigmaMethod', 'var'),
     estimateSigmaMethod = 'mean';
 end

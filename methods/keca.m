@@ -1,17 +1,17 @@
 % Compute the principal components of KECA method.
 %
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Xtest: Original test data.  Matrix, N(samples)xF(features).
-%       -Nfmax: # features extracted.
+%       - X     : Original data. Matrix, M(samples) x N(features)
+%       - Xtest : Original test data. Matrix, N(samples) x F(features)
+%       - Nfmax : # features extracted
 %
 % Outputs:
-%       -U    : Struct:
-%                       -basis  : principal componets.Matrix, M(samples)xR(rank(K)).
-%                       -train  : training original data
-%                       -method : feature extraction method
-%                       -kernel : Kernel kind.
-%                       -Ktrain : Kernel train.
+%       - U     : Struct:
+%                   - basis  : principal components.Matrix, M(samples) x R(rank(K))
+%                   - train  : training original data
+%                   - method : feature extraction method
+%                   - kernel : Kernel type
+%                   - Ktrain : Kernel train
 
 function U = keca(X, Nfeat, estimateSigmaMethod)
 % KECA: (Information Theory): Selects the principal directions that
@@ -19,7 +19,6 @@ function U = keca(X, Nfeat, estimateSigmaMethod)
 % information.
 
 % Rough estimation of the sigma parameter:
-% sigmax = estimateSigma(X,X);
 if ~exist('estimateSigmaMethod', 'var'),
     estimateSigmaMethod = 'mean';
 end

@@ -6,23 +6,22 @@ colors  = {'b' 'r' 'g' 'y' 'k' 'm' 'c'};
 colors2 = {[0 0 0.6],[0.6 0 0],[0 0.6 0],[0.6 0.6 0],[0.6 0.6 0.6],[0.6 0 0.6],[0 0.6 0.6]};
 
 gr = 30;
-x1min = 2*min(Xtrain(:,1));  x1max = 2*max(Xtrain(:,1));
-x2min = 2*min(Xtrain(:,2));  x2max = 2*max(Xtrain(:,2));
-[X,Y] = meshgrid(linspace(x1min,x1max,gr),linspace(x2min,x2max,gr));
+x1min = 2 * min(Xtrain(:,1));  x1max = 2 * max(Xtrain(:,1));
+x2min = 2 * min(Xtrain(:,2));  x2max = 2 * max(Xtrain(:,2));
+[X,Y] = meshgrid(linspace(x1min, x1max, gr), linspace(x2min, x2max, gr));
 Z = [X(:) , Y(:)];
-phiZ = Z*V(:,1:no_feats);
+phiZ = Z * V(:,1:no_feats);
 
 % Plot the map
 for class = 1:min(8,max(Labels))
-    c = find(Labels==class);
+    c = find(Labels == class);
     plot(Xtrain(c,1),Xtrain(c,2),'o','MarkerFaceColor',colors2{class},'MarkerEdgeColor',colors{class},'markersize',9),
     hold on
 end
 
 hold on
-pcolor(X,Y,reshape(phiZ(:,no_feats),[gr gr])),colormap gray
-hold on
-contour(X,Y,reshape(phiZ(:,no_feats),[gr gr]),8,'w')
+pcolor(X, Y, reshape(phiZ(:,no_feats), [gr gr])), colormap gray
+% hold on
+contour(X, Y, reshape(phiZ(:,no_feats), [gr gr]), 8, 'w') %, colormap gray
 shading interp
-axis equal, axis off
-colormap gray
+axis equal off

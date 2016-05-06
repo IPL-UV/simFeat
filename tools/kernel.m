@@ -31,5 +31,5 @@ elseif strcmp(type,'rbf')
     K = exp(-D.^2 / (2*param^2));
    
 else
-    disp('unspecified kernel function.')
+    disp('kernel function not implemented')
 end

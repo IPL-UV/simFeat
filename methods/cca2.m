@@ -26,7 +26,7 @@ Cyx = Cxy';
 Cyy = C(sx+1:sx+sy, sx+1:sx+sy) + 1e-8 * eye(sy);
 % invCyy = inv(Cyy);
 
-% --- Calcualte Wx and r ---
+% --- Calculate Wx and r ---
 
 % [Wx,r] = eig(inv(Cxx)*Cxy * invCyy*Cyx); % Basis in X
 [Wx,r] = eig((Cxx \ Cxy) * (Cyy \ Cyx)); % Basis in X
@@ -43,14 +43,15 @@ for j = 1:length(I)
 end
 Wx = fliplr(Wx);         % restore sorted eigenvectors into descending order
 
-% --- Calcualte Wy  ---
+% --- Calculate Wy  ---
 
 % Wy = invCyy * Cyx * Wx;     % Basis in Y
-% Wy = (Cyy \ Cyx) * Wx;
-% Wy = Wy ./ repmat(sqrt(sum(abs(Wy).^2)), sy, 1); % Normalize Wy
+Wy = (Cyy \ Cyx) * Wx;
+Wy = Wy ./ repmat(sqrt(sum(abs(Wy).^2)), sy, 1); % Normalize Wy
 
 %  SAVE STRUCT
 U.lambda = diag(r); 
 U.basis  = Wx;
-U.method ='CCA';
+U.V      = Wy;
+U.method ='CCA2';
 U.train  = X';

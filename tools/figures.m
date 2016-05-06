@@ -18,7 +18,7 @@ if ~isfield(U,'kernel')
     XtrainProj = U.train * U.basis(:,1:Nfeat);    
 else
     if strcmp(U.method,'KECA')
-        XtrainProj = U.Ktrain' *  U.basis;
+        XtrainProj = U.Ktrain' * U.basis;
     else
         Kc = kernelcentering(U.Ktrain);
         XtrainProj = Kc' * U.basis(:,1:Nfeat);
@@ -26,39 +26,39 @@ else
 end
 
 if isfield(U,'kernel') && isfield(U,'lambda')
-    phi=U.basis*sqrt(U.lambda);
+    phi = U.basis * sqrt(U.lambda);
 end
 
 %% PLOT
 if max(Y) == 3
-    rows = 1+ ceil(Nfeat/3);
+    rows = 1 + ceil(Nfeat / 3);
     cols = 3;
     figure,
     subplot(rows,cols,1),
     plot(U.train(Y==1,1),U.train(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9), hold on,
-    plot(U.train(Y==2,1),U.train(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9), hold on,
+    plot(U.train(Y==2,1),U.train(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
     plot(U.train(Y==3,1),U.train(Y==3,2),'o','MarkerFaceColor',[0 0.6 0],'MarkerEdgeColor','g','markersize',9)
     axis equal off
     title('Original data')
-    if size(XtrainProj,2)>1
+    if size(XtrainProj,2) > 1
         subplot(rows,cols,2),
-        plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
-        hold on, plot(XtrainProj(Y==2,1),XtrainProj(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
-        hold on, plot(XtrainProj(Y==3,1),XtrainProj(Y==3,2),'o','MarkerFaceColor',[0 0.6 0],'MarkerEdgeColor','g','markersize',9)
+        plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9), hold on
+        plot(XtrainProj(Y==2,1),XtrainProj(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
+        plot(XtrainProj(Y==3,1),XtrainProj(Y==3,2),'o','MarkerFaceColor',[0 0.6 0],'MarkerEdgeColor','g','markersize',9)
         axis equal off
         title(strcat(U.method,' Scores'))
         subplot(rows,cols,3),
         if isfield(U,'kernel') && isfield(U,'lambda')
-            plot(phi(Y==1,1),phi(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
-            hold on, plot(phi(Y==2,1),phi(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
-            hold on, plot(phi(Y==3,1),phi(Y==3,2),'o','MarkerFaceColor',[0 0.6 0],'MarkerEdgeColor','g','markersize',9)
+            plot(phi(Y==1,1),phi(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9), hold on
+            plot(phi(Y==2,1),phi(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
+            plot(phi(Y==3,1),phi(Y==3,2),'o','MarkerFaceColor',[0 0.6 0],'MarkerEdgeColor','g','markersize',9)
             axis equal off
             title(strcat(U.method,' Empirical Mapping'))
         else
             axis equal off
         end
     end
-    for f=1:Nfeat
+    for f = 1:Nfeat
         subplot(rows,cols,f+3),
         if ~isfield(U,'kernel')
             plotFeatures(U.train,U.basis,Y,f);
@@ -66,12 +66,12 @@ if max(Y) == 3
             plotKernelFeatures(U.train,U.sigma,U.basis,Y,U.Ktrain,U.method,f);
         end
         if isfield(U,'lambda')
-            format='%0.4g';
+            format = '%0.4g';
             title([U.method ', \lambda=' num2str(U.lambda(f,f),format)])
         end
     end
 else
-    rows = 1+ ceil(Nfeat/3);
+    rows = 1 + ceil(Nfeat / 3);
     cols = 3;
     figure,
     subplot(rows,cols,1),
@@ -81,21 +81,21 @@ else
     title('Original data')
     if size(XtrainProj,2)>1
         subplot(rows,cols,2),
-        plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
-        hold on, plot(XtrainProj(Y==2,1),XtrainProj(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
+        plot(XtrainProj(Y==1,1),XtrainProj(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9), hold on
+        plot(XtrainProj(Y==2,1),XtrainProj(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
         axis equal off
         title(strcat(U.method,' Scores'))
         subplot(rows,cols,3),
         if isfield(U,'kernel') && isfield(U,'lambda')
-            plot(phi(Y==1,1),phi(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9)
-            hold on, plot(phi(Y==2,1),phi(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
+            plot(phi(Y==1,1),phi(Y==1,2),'o','MarkerFaceColor',[0 0 0.6],'MarkerEdgeColor','b','markersize',9), hold on
+            plot(phi(Y==2,1),phi(Y==2,2),'o','MarkerFaceColor',[0.6 0 0],'MarkerEdgeColor','r','markersize',9)
             axis equal off
             title(strcat(U.method,' Empirical Mapping'))
         else
             axis equal off
         end
     end
-    for f=1:Nfeat
+    for f = 1:Nfeat
         subplot(rows,cols,f+3),
         if ~isfield(U,'kernel')
             plotFeatures(U.train,U.basis,Y,f);
@@ -103,7 +103,7 @@ else
             plotKernelFeatures(U.train,U.sigma,U.basis,Y,U.Ktrain,U.method,f);
         end
         if isfield(U,'lambda')
-            format='%0.4g';
+            format = '%0.4g';
             title([U.method ', \lambda=' num2str(U.lambda(f,f),format)])
         end
     end
