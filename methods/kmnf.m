@@ -33,7 +33,7 @@ sigmaxn = estimateSigma(X, N, estimateSigmaMethod);
 Kxn = kernel('rbf', X, N, sigmaxn);
 Kxnc = kernelcentering(Kxn);
 
-[U_kmnf d] = gen_eig(Kc * Kc, Kxnc * Kxnc',Nfeat);
+[U_kmnf d] = gen_eig(Kc * Kc, Kxnc * Kxnc', Nfeat);
 
 U.lambda = d;
 U.basis = U_kmnf;

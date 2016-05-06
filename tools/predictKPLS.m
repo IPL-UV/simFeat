@@ -16,7 +16,7 @@
 function [U Ypred] = predictKPLS(X, Xtest, Y, Nfmax, estimateSigmaMethod)
 % KPLS: K * Y * U_kpls = s * U_kpls
 
-Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
+% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % Rough estimation of the sigma parameter:
 % sigmax = estimateSigma(X,X);
@@ -31,7 +31,7 @@ Kc = kernelcentering(K);
 Ktest = kernel('rbf', X, Xtest, sigmax);
 Ktestc = kernelcentering(Ktest,sum(K));
 
-[ ~, test, U_kpls] = dualpls(Kc,Ktestc,Yb,Nfmax);
+[ ~, test, U_kpls] = dualpls(Kc,Ktestc,Y,Nfmax);
 [~, Ypred] = max(test,[],2);
 
 % U.lambda = s;

@@ -16,9 +16,9 @@ function U = plsSB(X, Y, Nfmax)
 %-----------------
 %  PLS
 %-----------------
-Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
+% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
-Cxy = X' * Yb;
+Cxy = X' * Y;
 
 % [A,S,V] = svds(Cxy,min(Nfmax,rank(Cxy)));
 [A,S] = svds(Cxy, min(Nfmax, rank(Cxy)));

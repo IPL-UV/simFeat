@@ -16,9 +16,9 @@ function [U Ypred] = predictPLS(X, Xtest, Y, Nfmax)
 %-----------------
 %  PLS
 %-----------------
-Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
+% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
-[~, A, test] = pls(X, Xtest, Yb, Nfmax);
+[~, A, test] = pls(X, Xtest, Y, Nfmax);
 [~, Ypred] = max(test, [], 2);
 
 U.basis = A;

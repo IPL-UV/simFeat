@@ -1,34 +1,34 @@
 % Compute the principal components of PLS method.
 % Inputs:
-%       -X    : Original data. Matrix, M(samples)xN(features).
-%       -Y    : Labeled of X. Vector, M(samples)x1.
-%       -Nfmax: # features extracted.
+%       -X    : Original data. Matrix, M(samples) x N(features)
+%       -Y    : Labeled of X. Vector, M(samples) x 1
+%       -Nfmax: # features extracted
 %
 % Outputs:
 %       -U    : Struct:
-%                       -basis  : principal componets. Matrix, M(samples) x R(rank(Cxy)).
+%                       -basis  : principal componets. Matrix, M(samples) x R(rank(Cxy))
 %                       -train  : training original data
 %                       -method : feature extraction method
 
 function U = cca(X, Y, Nfeat)
 % CCA: A * U_cca = s * B * U_cca
 
-Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
+% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 % TODO: labels are centered in train:
 %       1) they should be centered at test too (they don't)
 %       2) other methods should center them too (they don't)
 %       3) would it be better not binarizing Y variables? I think so
 % Centered labels
-Y1 = Yb - repmat(mean(Yb),length(Y),1);
+% Y1 = Yb - repmat(mean(Yb),length(Y),1);
 
-dx = size(X,2);
-dy = size(Y1,2);
+% dx = size(X,2);
+% dy = size(Y1,2);
 
-Cxx = X' * X + 1e-8 * eye(dx);
-Cxy = X' * Y1;
+Cxx = X' * X + 1e-8 * eye(size(X,2));
+Cxy = X' * Y;
 Cyx = Cxy';
-Cyy = Y1' * Y1 + 1e-8 * eye(dy);
+Cyy = Y' * Y + 1e-8 * eye(size(Y,2));
 
 % solving the generalized eigenproblem is a nightmare
 % A = [zeros(dx,dx)     Cxy;     
@@ -40,17 +40,11 @@ Cyy = Y1' * Y1 + 1e-8 * eye(dy);
 % [U_cca d] = eigs(A,B,Nfeat);
 % it is much simpler is to conver it into a single eigenproblem
 
-%A = [zeros(dx,dy) Cxy       ; Cyx       zeros(dy,dx)];
-%B = [Cxx          zeros(dx) ; zeros(dy) Cyy         ];
-%[U_cca,lambda] = eigs(A, B, Nfeat);
-%U_cca = U_cca(1:Nfeat,:);
-%D = (abs(lambda));
-
-%[U_cca,lambda] = gen_eig(Cxy*inv(Cyy)*Cyx, Cxx, Nfeat); % Basis in X
+% [U_cca,lambda] = gen_eig(Cxy * inv(Cyy) * Cyx, Cxx, Nfeat); % Basis in X
 [U_cca,lambda] = gen_eig(Cxy * (Cyy \ Cyx), Cxx, Nfeat); % Basis in X
 D = sqrt(lambda);      % Canonical correlations
 
-% [V,l] = gen_eig(Cyx*inv(Cxx)*Cxy, Cyy, Nfeat); % Basis in Y
+% [V,l] = gen_eig(Cyx * inv(Cxx) * Cxy, Cyy, Nfeat); % Basis in Y
 V = gen_eig(Cyx * (Cxx \ Cxy), Cyy, Nfeat); % Basis in Y
 
 U.lambda = D; 

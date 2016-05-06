@@ -12,10 +12,10 @@
 
 function U = opls(X,Y,Nfeat)
 % OPLS: Cxy * Cxy' * U_opls = s * Cxx * U_opls
-Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
+% Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
 
 Cxx = X' * X;
-Cxy = X' * Yb;
+Cxy = X' * Y;
 
 [U_opls d] = gen_eig(Cxy * Cxy', Cxx, Nfeat);
 
