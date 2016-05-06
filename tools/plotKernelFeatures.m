@@ -4,7 +4,7 @@ function plotKernelFeatures(Xtrain,sigma,V,Labels,Ktrain,method,no_feats)
 
 V = real(V); %% hack!
 colors  = {'b' 'r' 'g' 'y' 'k' 'm' 'c'};
-colors2 = {[0 0 0.6],[0.6 0 0],[0 0.6 0],[0.6 0.6 0],[0.6 0.6 0.6],[0.6 0 0.6],[0 0.6 0.6]};
+colors2 = {[0 0 0.6], [0.6 0 0], [0 0.6 0], [0.6 0.6 0], [0.6 0.6 0.6], [0.6 0 0.6], [0 0.6 0.6]};
 
 gr = 30;
 x1min = 2 * min(Xtrain(:,1));  x1max = 2 * max(Xtrain(:,1));
@@ -14,8 +14,8 @@ Z = [X(:) , Y(:)];
 
 Ktest = kernel('rbf', Xtrain, Z, sigma);
 
-if ~strcmp(method,'KECA')
-    Ktest=kernelcentering(Ktest, sum(Ktrain));
+if ~strcmp(method, 'KECA')
+    Ktest = kernelcentering(Ktest, sum(Ktrain));
 end
 
 phiZ = Ktest' * V;

@@ -10,10 +10,9 @@ function U = primalpls(X, Y, Nfeat)
 % Outputs:
 %       - U     : principal componets. Matrix, M(samples) x R(rank(Cxy))
 
-%
 % For more info, see www.kernel-methods.net
 %
-% Note: this code has not been tested extensively.
+% Note: this code has not been tested extensively
 
 % X is an ell x n matrix whose rows are the training inputs
 % Y is ell x m containing the corresponding output vectors

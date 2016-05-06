@@ -1,4 +1,4 @@
-% Compute the principal components of KPLS method.
+% Compute the principal components of KPLS method
 %
 % Inputs:
 %       - X     : Original data. Matrix, M(samples) x N(features)
@@ -13,8 +13,12 @@
 %                   - kernel : Kernel type
 %                   - Ktrain : Kernel train
 
-function U = kpls(X, Y, Nfeat, estimateSigmaMethod)
+function U = kpls(X, Y, Nfeat, method, estimateSigmaMethod)
 % KPLS: K * Y * U_kpls = s * U_kpls
+
+if ~exist('method', 'var')
+    method = 'KPLS';
+end
 
 % Rough estimation of the sigma parameter:
 if ~exist('estimateSigmaMethod', 'var'),
@@ -26,12 +30,21 @@ sigmax = estimateSigma(X, [], estimateSigmaMethod);
 K = kernel('rbf', X, X, sigmax);
 Kc = kernelcentering(K);
 
-% [U_kpls,s,v] = svds(Kc * Y, Nfeat);
-[U_kpls,s] = svds(Kc * Y, Nfeat);
+switch method
+    case 'KPLS'
+        % [U_kpls,s,v] = svds(Kc * Y, Nfeat);
+        [U_kpls,s] = svds(Kc * Y, Nfeat);
+        U.lambda = s;
+        
+    case 'dualPLS'
+        U_kpls = dualpls(Kc, Y, Nfeat);
 
-U.lambda = s;
+    otherwise
+        error(['Unknown method ' method])
+end
+
 U.basis = U_kpls;
-U.method = 'KPLS';
+U.method = method;
 U.train = X;
 U.Ktrain = K;
 U.kernel = 'rbf';

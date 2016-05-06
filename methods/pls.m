@@ -1,4 +1,4 @@
-% Compute the principal components of PLS method.
+% Compute the principal components of PLS method
 % Inputs:
 %       - X      : Original data. Matrix, M(samples) x N(features)
 %       - Yb     : Labeled of X. Matrix, M(samples) x C(classes)

@@ -241,4 +241,4 @@ if sum(strcmpi(method, 'krr')) && ~isempty(Y)
     cost = toc;  
 end
 
-fprintf('method: %s, sigma: %f, cpmp. time: %f\n', method, sigma, cost)
+% fprintf('method: %s, sigma: %f, cpmp. time: %f\n', method, sigma, cost)

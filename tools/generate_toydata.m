@@ -146,7 +146,7 @@ switch method
 
     case 'moons'
 
-        space = 2;
+        space = 1;
         noise = 0.05;
         
         r = randn(n,1) * noise + 1;
