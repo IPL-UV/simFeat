@@ -1,4 +1,4 @@
-% Compute the principal components of PLS method.
+% Compute the principal components of CCA method.
 % Inputs:
 %       - X     : Original data. Matrix, M(samples) x N(features)
 %       - Y     : Labeled of X. Vector, M(samples) x 1
