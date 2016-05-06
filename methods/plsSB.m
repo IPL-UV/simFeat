@@ -20,6 +20,8 @@ Cxy = X' * Y;
 
 % [A,S,V] = svds(Cxy,min(Nfmax,rank(Cxy)));
 [A,S] = svds(Cxy, min(Nfmax, rank(Cxy)));
+% [~,ind] = sort(diag(S), 'descend');
+% A = A(:,ind);
 
 U.lambda = S;
 U.basis = A;

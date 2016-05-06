@@ -32,7 +32,7 @@ addpath(genpath('./tools'))
 rng(1234);
 Ntrain = 100;   % Training data
 Ntest  = 160;   % Test data
-problem = 'moons'  %  lines  wheel swiss  %%%--  noisysinus moons xor noisyxor ellipsoids balls3 ellipsoids3
+problem = 'swiss'  %  lines wheel swiss noisysinus moons xor noisyxor ellipsoids balls3 ellipsoids3
 [X,Y]         = generate_toydata(Ntrain,problem);
 [Xtest,Ytest] = generate_toydata(Ntest,problem);
 
@@ -55,9 +55,8 @@ np = 35;           % Number of features to be extracted
 % methods = {'pca'}
 % methods = {'pca' 'pls-SB' 'pls' 'opls' 'cca' 'mnf' 'kpca' 'kpls-SB' 'kpls' 'kopls' 'kcca' 'kmnf' 'keca'}; % all methods
 % methods = {'pca' 'pls' 'opls' 'cca' 'mnf'}; % linear methods
-% methods = {'pls-SB','pls','opls','cca'}; % supervised linear methods
-methods = {'pca','mnf'}; % unsupervised linear methods
-% methods = {'kcca'}; % linear methods
+methods = {'pls-SB','pls','opls','cca'}; % supervised linear methods
+% methods = {'pca','mnf'}; % unsupervised linear methods
 % methods = {'pls' 'opls' 'cca' 'kpls' 'kopls' 'kcca'}; % supervised
 % methods = {'pca' 'mnf' 'kpca' 'kmnf' 'keca'}; % unsupervised
 % methods = {'kpls-SB','kpls' 'kopls' 'kcca'}; % supervised kernel methods
@@ -86,12 +85,13 @@ if sum(strcmpi(methods,'pls-SB'))
     %npmax = min([np,size(X,2),max(Y)]);
     npmax = min([np,size(X,2),size(Yb,2)]);
     U_plsSB = plsSB(X,Yb,npmax);
-    Ypred_PLSSB = predict(Y,Xtest,U_plsSB,npmax);
+    Ypred_PLSSB = predict(Y, Xtest, U_plsSB, npmax);
 end
 % PLS
 if sum(strcmpi(methods,'pls'))
     npmax = np;
-    [U_pls Ypred_PLS] = predictPLS(X,Xtest,Yb,npmax);
+    [U_pls Ypred_PLS] = predictPLS(X, Xtest, Yb, npmax);
+    %Ypred_PLS = predict(Y, Xtest, U_pls, npmax);
 end
 % OPLS
 if sum(strcmpi(methods,'opls'))
