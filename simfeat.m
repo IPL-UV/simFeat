@@ -1,4 +1,5 @@
 % Educational demo that compares standard linear and nonlinear feature extraction methods:
+%
 %       PCA, PLS, OPLS, CCA, MNF,
 %       KPCA, KPLS, KOPLS, KCCA, KMNF and KECA
 %
@@ -413,3 +414,4 @@ if sum(strcmpi(methods, 'keca'))
 end
 xlabel('# Predictions'), ylabel('Overall accuracy')
 grid, axis tight, legend(methods), title(dataset)
+

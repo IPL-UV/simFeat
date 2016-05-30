@@ -1,4 +1,4 @@
- SIMFEAT_TOOLBOX
+ SIMFEAT TOOLBOX 2.1
  
 AUTHORS: E. Izquierdo-Verdiguier, L. Gómez-Chova, G. Camps-Valls
 
@@ -39,19 +39,23 @@ AUTHORS: E. Izquierdo-Verdiguier, L. Gómez-Chova, G. Camps-Valls
 %%% REFERENCES %%%
 
  I. T. Jollife, Principal Component Analysis, Springer, 1986.
+
  J. Shawe-Taylor and N. Cristianini, Kernel Methods for Pattern Analysis, Cambridge University Press, 2004.
+
  C. M. Bishop, Pattern Recognition and Machine Learning (Information Science and Statistics), Springer-Verlag New York, Inc., 2006.
+
  O. Chapelle, B. Schölkopf, and A. Zien, Semi-Supervised Learning, MIT Press, Cambridge, 1st edition, 2006.
+
  G. Camps-Valls and L.Bruzzone, "Kernel Methods for Remote Sensing Data Analysis", John Wiley and Sons, Ltd. 2009.
+
  G. Camps-Valls, D. Tuia, L. Gómez-Chova, S. Jiménez, J. Malo, "Remote Sensing Image Processing. Synthesis Lectures on Image, Video, and Multimedia Processing",  Morgan & Claypool Publishers,2012.
- 
- 
+
  S. Wold, C. Albano, W. J. Dunn, U. Edlund, K. Esbensen, P. Geladi, S. Hellberg, E. Johansson, W. Lindberg, and M. Sjostrom, Chemometrics, Mathematics and Statistics in Chemistry, chapter Multivariate Data Analysis in Chemistry, p. 17, Reidel Publishing Company, 1984.
- 
+
  R. Rosipal and N. Krämer, “Overview and recent advances in partial least squares,” in Subspace, Latent Structure and Feature Selection. 2006, vol. 3940 of LNCS, pp. 34–51, Springer.
- 
+
  K. Worsley, J. Poline, K. Friston, and A. Evans, “Characterirzing the response of PET and fMRI data using multivariate linear models (mlm),” NeuroImage, vol. 6, pp. 305–319, 1998.
- 
+
  A.A. Green, M. Berman, P. Switzer, and M.D. Craig. A transformation for ordering multispectral data in terms of image quality with implications for noise removal. IEEE Trans. Geosci. Rem. Sens., 26 (1): 65–74, Jan 1988b.
  
  M.A. Kramer. Nonlinear principal component analysis using autoassociative neural networks. AIChE Journal, 37 (2): 233–243, 1991.
@@ -64,3 +68,4 @@ AUTHORS: E. Izquierdo-Verdiguier, L. Gómez-Chova, G. Camps-Valls
  Robert Jenssen, "Kernel Entropy Component Analysis", IEEE TRANSACTIONS ON PATTERN ANALYSIS AND MACHINE INTELLIGENCE, Vol. 32, Nº. 5, May 2010.
  
  Luis Gómez-Chova, Robert Jenssen, and Gustavo Camps-Valls, "Kernel Entropy Component Analysis in Remote Sensing Image Clustering" IEEE Geoscience and Remote Sensing Letters, 9(2), 312 - 316, 2012.
+
