@@ -65,8 +65,7 @@ Xtest = Xt(1+id:end,:);
 %% Feature extraction settings
 np = 35;           % Number of features to be extracted
 % Yb = binarize(Y); % Encode the labels with a 1-of-C scheme
-% methods = {'pca'}
-% methods = {'pca' 'pls' 'primalpls' 'opls' 'cca' 'mnf' 'kpca' 'kpls' 'dualpls' 'kopls' 'kcca' 'kmnf' 'keca'}; % all methods
+methods = {'pca' 'pls' 'primalpls' 'opls' 'cca' 'mnf' 'kpca' 'kpls' 'dualpls' 'kopls' 'kcca' 'kmnf' 'keca'}; % all methods
 % methods = {'pca' 'pls' 'opls' 'cca' 'mnf'}; % linear methods
 % methods = {'pls','primalpls','opls','cca'}; % supervised linear methods
 % methods = {'pca','mnf'}; % unsupervised linear methods
@@ -74,8 +73,6 @@ np = 35;           % Number of features to be extracted
 % methods = {'pca' 'mnf' 'kpca' 'kmnf' 'keca'}; % unsupervised
 % methods = {'kpls','dualpls' 'kopls' 'kcca'}; % supervised kernel methods
 % methods = {'kpca' 'kmnf' 'keca'}; % unsupervised kernel methods
-
-methods = {'pls','primalpls','kpls','dualpls'};
 
 % Do you want to analyze robustness to #samples by bootstrapping a
 % linear classifier working with the scores (projected data)?
@@ -93,43 +90,50 @@ estimateSigmaMethod = 'mean';
 if sum(strcmpi(methods, 'pca'))
     npmax = min([np, size(X,2)]);
     U_pca = pca(X, npmax);
-    Ypred_PCA = predict(Y, Xtest, U_pca, npmax);
+    Ypred_PCA = predict(Yb, Xtest, U_pca, npmax);
+    Ypred_PCA = unbinarize(Ypred_PCA);
 end
 % PLS
 if sum(strcmpi(methods, 'pls'))
     npmax = min([np, size(X,2), size(Yb,2)]);
     U_pls = pls(X, Yb, npmax , 'PLS');
-    Ypred_PLS = predict(Y, Xtest, U_pls, npmax);
+    Ypred_PLS = predict(Yb, Xtest, U_pls, npmax);
+    Ypred_PLS = unbinarize(Ypred_PLS);
 end
 % Primal PLS
 if sum(strcmpi(methods, 'primalpls'))
     npmax = np;
     U_ppls = pls(X, Yb, npmax, 'primalPLS');
-    Ypred_PPLS = predict(Y, Xtest, U_ppls, npmax);
+    Ypred_PPLS = predict(Yb, Xtest, U_ppls, npmax);
+    Ypred_PPLS = unbinarize(Ypred_PPLS);
 end
 % OPLS
 if sum(strcmpi(methods, 'opls'))
     npmax = min([np, size(X,2), size(Yb,2)]);
     U_opls = opls(X, Yb, npmax);
-    Ypred_OPLS = predict(Y, Xtest, U_opls, npmax);
+    Ypred_OPLS = predict(Yb, Xtest, U_opls, npmax);
+    Ypred_OPLS = unbinarize(Ypred_OPLS);
 end
 % CCA
 if sum(strcmpi(methods, 'cca'))
     npmax = min([np, size(X,2), size(Yb,2)]);
     U_cca = cca(X, Yb, npmax);
-    Ypred_CCA = predict(Y, Xtest, U_cca, npmax);
+    Ypred_CCA = predict(Yb, Xtest, U_cca, npmax);
+    Ypred_CCA = unbinarize(Ypred_CCA);
 end
 % CCA2
 %if sum(strcmpi(methods, 'cca2'))
 %    npmax = min([np, size(X,2), max(Y)]);
 %    U_cca2 = cca2(X',Y');
-%    Ypred_CCA2 = predict(Y, Xtest, U_cca2, npmax);
+%    Ypred_CCA2 = predict(Yb, Xtest, U_cca2, npmax);
+%    Ypred_CCA2 = unbinarize(Ypred_CCA2);
 %end
 % MNF
 if sum(strcmpi(methods, 'mnf'))
     npmax = min([np, size(X,2)]);
     U_mnf = mnf(X, npmax);
-    Ypred_MNF = predict(Y, Xtest, U_mnf, npmax);
+    Ypred_MNF = predict(Yb, Xtest, U_mnf, npmax);
+    Ypred_MNF = unbinarize(Ypred_MNF);
 end
 
 %% Nonlinear methods
@@ -138,43 +142,50 @@ end
 if sum(strcmpi(methods, 'kpca'))
     npmax = min([np, size(X,1)]);
     U_kpca = kpca(X, npmax, estimateSigmaMethod);
-    Ypred_KPCA = predict(Y, Xtest, U_kpca, npmax);
+    Ypred_KPCA = predict(Yb, Xtest, U_kpca, npmax);
+    Ypred_KPCA = unbinarize(Ypred_KPCA);
 end
 % KPLS
 if sum(strcmpi(methods,  'kpls'))
     npmax = min([np, size(Yb,2)]);
     U_kpls = kpls(X, Yb, npmax, 'KPLS', estimateSigmaMethod);
-    Ypred_KPLS = predict(Y, Xtest, U_kpls, npmax);
+    Ypred_KPLS = predict(Yb, Xtest, U_kpls, npmax);
+    Ypred_KPLS = unbinarize(Ypred_KPLS);
 end
 % KPLS
 if sum(strcmpi(methods, 'dualpls'))
     npmax = np;
     U_dkpls = kpls(X, Yb, npmax, 'dualPLS', estimateSigmaMethod);
-    Ypred_DKPLS = predict(Y, Xtest, U_dkpls, npmax);
+    Ypred_DKPLS = predict(Yb, Xtest, U_dkpls, npmax);
+    Ypred_DKPLS = unbinarize(Ypred_DKPLS);
 end
 % KOPLS
 if sum(strcmpi(methods, 'kopls'))
     npmax = min([np, size(Yb,2)]);
     U_kopls = kopls(X, Yb, npmax, estimateSigmaMethod);
-    Ypred_KOPLS = predict(Y, Xtest, U_kopls, npmax);
+    Ypred_KOPLS = predict(Yb, Xtest, U_kopls, npmax);
+    Ypred_KOPLS = unbinarize(Ypred_KOPLS);
 end
 % KCCA
 if sum(strcmpi(methods, 'kcca'))
     npmax = min([np, size(Yb,2)]);
     U_kcca = kcca(X, Yb, npmax, estimateSigmaMethod);
-    Ypred_KCCA = predict(Y, Xtest, U_kcca, npmax);
+    Ypred_KCCA = predict(Yb, Xtest, U_kcca, npmax);
+    Ypred_KCCA = unbinarize(Ypred_KCCA);
 end
 % KMNF
 if sum(strcmpi(methods, 'kmnf'))
     npmax = min([np, size(X,1)]);
     U_kmnf = kmnf(X, npmax, estimateSigmaMethod);
-    Ypred_KMNF = predict(Y, Xtest, U_kmnf, npmax);
+    Ypred_KMNF = predict(Yb, Xtest, U_kmnf, npmax);
+    Ypred_KMNF = unbinarize(Ypred_KMNF);
 end
 % KECA
 if sum(strcmpi(methods, 'keca'))
     npmax = min([np, size(X,1)]);
     U_keca = keca(X, npmax, estimateSigmaMethod);
-    Ypred_KECA = predict(Y, Xtest, U_keca, npmax);
+    Ypred_KECA = predict(Yb, Xtest, U_keca, npmax);
+    Ypred_KECA = unbinarize(Ypred_KECA);
 end
 
 %% Plots
@@ -239,6 +250,7 @@ if size(X,2) < 3
 end
 
 %% Statistics
+
 if linearclass
     
     % Accuracy vs #predictions

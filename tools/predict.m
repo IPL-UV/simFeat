@@ -51,8 +51,12 @@ end
 % title(strcat(U.method,' scores'))
 
 % Prediction labels using linear regression as basic classifier
-Yb = binarize(Y);
+
+% Yb = binarize(Y); % Labels are no longer binarized here, but outside (if required)
+
 XtrainProj1 = [XtrainProj ones(size(XtrainProj,1),1)];
-W = pinv(XtrainProj1) * Yb;
+W = pinv(XtrainProj1) * Y;
 Ypred = XtestProj * W(1:end-1,:) + repmat(W(end,:),size(XtestProj,1),1);
-[~, Ypred] = max(Ypred,[],2);
+
+% [~, Ypred] = max(Ypred,[],2); % This is a de-binarization, also goes outside
+
