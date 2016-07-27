@@ -1,6 +1,12 @@
- SIMFEAT TOOLBOX 2.1
- 
-AUTHORS: E. Izquierdo-Verdiguier, L. Gómez-Chova, G. Camps-Valls
+SIMFEAT TOOLBOX 2.2
+
+AUTHORS: E. Izquierdo-Verdiguier, L. Gómez-Chova, G. Camps-Valls, Jordi Muñoz-Marí
+
+  Note:
+  -----
+  This toolbox requires the Alexander Ihler's kernel density estimation (KDE) toolbox. You should
+  download it from http://www.ics.uci.edu/~ihler/code/kde.html and install it inside the 'tools'
+  directory.
 
  %%% FILES %%%
  
