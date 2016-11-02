@@ -28,7 +28,11 @@ elseif strcmp(type,'rbf')
             D(i,j) = norm(X1(i,:) - X2(j,:));
         end
     end
-    K = exp(-D.^2 / (2*param^2));
+    % Ugly fix: param (sigma) could be a vector when using estimateSigma with a method
+    % like 'quantiles', and this will fail:
+    %K = exp(-D.^2 / (2*param^2));
+    % For now we just workaround the problem:
+    K = exp(-D.^2 / (2*mean(param)^2));
    
 else
     disp('kernel function not implemented')
