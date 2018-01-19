@@ -13,7 +13,7 @@
 function U = opls(X,Y,Nfeat)
 % OPLS: Cxy * Cxy' * U_opls = s * Cxx * U_opls
 
-Cxx = X' * X;
+Cxx = X' * X + 1e-8 * eye(size(X,2));
 Cxy = X' * Y;
 
 [U_opls d] = gen_eig(Cxy * Cxy', Cxx, Nfeat);
